@@ -23,25 +23,26 @@ Use Python and SQLAlchemy to do basic climate analysis and data exploration of t
  last_date = session.query(m.date).order_by(m.date.desc()).first()[0]
  query_date = dt.datetime.strptime(last_date, '%Y-%m-%d') - dt.timedelta(days=366)
  ```
-Using a sqlalchemy orm query we can retrieve the data points for date and precipitation from that filtered dataset and then converting it to all dataframe will allow the data to be sorted by ascending value.
+Now with a sqlalchemy orm query we can retrieve the data points for date and precipitation from that filtered dataset and then converting it to all dataframe will allow the data to be sorted by ascending value.
 
-        ```
-        df = pd.DataFrame(data, columns=['date', 'precip'])
-        climate_df = df.sort_values(by = 'date', ascending= True)
-        ```
+ ```
+ df = pd.DataFrame(data, columns=['date', 'precip'])
+ climate_df = df.sort_values(by = 'date', ascending= True)
+ ```
         
-      With the sorted dataframe a graph of the rainfall data can be created.
+With the sorted dataframe a graph of the rainfall data can be created.
 
-      <img src="images/rain_chart.png" height="auto">
+<img src="images/rain_chart.png" height="auto">
 
 3. Station Analysis  
-The following are points of interest for the stations in the dataset:
-  - Total number of stations
-  - Stations and observation counts in descending order
-  - Which station has the highest number of observations?
-  - Last 12 months of temperature observation data (TOBS)
-  - Filter by the station with the highest number of observations.
-  - Plot the results as a histogram with `bins=12`
+        The following are points of interest for the stations in the dataset:
+        - Total number of stations
+        - Stations and observation counts in descending order
+        - Which station has the highest number of observations?
+        - Last 12 months of temperature observation data (TOBS)
+        - Filter by the station with the highest number of observations.
+
+
 The queries will all start with `session.query()` and then chain functions as necessary. In some cases arithmetic operations are need. This is accomplished using `func` and the required operation. For example with the first question the `func.count()` function will be used as such:
 ```
 session.query(func.count(s.station)).first()[0]
@@ -54,13 +55,15 @@ Here we are using the class variables set up earlier. They the same as tables in
 ```
 session.query(s.station, s.name, func.count(s.name)).filter(s.station == m.station).group_by(s.name).order_by(func.count(s.name).desc()).all()
 ```
+
 <img src="images/query.png" height="auto">
 
 Using a similar method as before we can convert the last 12 months of temperature data into a dataframe and graph it as a histogram
+
 <img src="images/histogram.png" height="auto">
 
-2. Flask App
-Using the same queries developed in the previous component we can display the data in a flask app. The important consideration is setting up the routes correctly. That will look as such
+4. Flask App
+        Using the same queries developed in the previous component we can display the data in a flask app. The important consideration is setting up the routes correctly. That will look as such
 ```
 @app.route("/api/v1.0/precipitation")
 def precipitation():

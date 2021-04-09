@@ -32,18 +32,18 @@ Use Python and SQLAlchemy to do climate analysis and data exploration of the pro
       <img src="images/rain_chart.png" height="auto">
 
 3. Station Analysis  
-        The following are points of interest for the stations in the dataset:
-        - Total number of stations
-        - Stations and observation counts in descending order
-        - Which station has the highest number of observations?
-        - Last 12 months of temperature observation data (TOBS)
-        - Filter by the station with the highest number of observations.
+   The following are points of interest for the stations in the dataset:
+      - Total number of stations
+      - Stations and observation counts in descending order
+      - Which station has the highest number of observations?
+      - Last 12 months of temperature observation data (TOBS)
+      - Filter by the station with the highest number of observations.  
 
 
-The queries will all start with `session.query()` and then chain functions as necessary. In some cases arithmetic operations are need. This is accomplished using `func` and the required operation. For example with the first question the `func.count()` function will be used as such:
-```
-session.query(func.count(s.station)).first()[0]
-```
+   The queries will all start with `session.query()` and then chain functions as necessary. In some cases arithmetic operations are need. This is accomplished using `func` and the required operation. For example with the first question the `func.count()` function will be used as such:
+     ```
+     session.query(func.count(s.station)).first()[0]
+     ```
 The chain of functions can get quite complex. For example, to get the station with the most observations the following query is used:
 ```
 session.query(m.station).filter(s.station == m.station).group_by(m.station).order_by(func.count(m.tobs).desc()).first()

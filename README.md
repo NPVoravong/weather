@@ -1,21 +1,21 @@
 # Prompt
 Use Python and SQLAlchemy to do basic climate analysis and data exploration of the provided climate database. All of the following analysis should be completed using SQLAlchemy ORM queries, Pandas, and Matplotlib. After this analysis is done create a flask app to display the results.
 
-# Process
-
-### Dependencies 
+# Dependencies 
 - Python
 - SQL Alchemy
 - Pandas
 - Matplotlib
 - Flask
 
+# Process
 1. Database Connection  
         SQL ALchemy will be used to connect to the provided sqlite database. The `create_engine()` function will act as the bridge to the sqlite database. For the purposes of this project the database is stored locally. Once the location of the database is referenced it can be transformed into a model that python can work with using `automap_base()` and `prepare(engine, reflect=True)`. Automap reads the sqlite database and generates classes. To make future uses of these classes easier they are saved to variable as such:
-```
-        m = Base.classes.measurement
-        s = Base.classes.station
-```
+        
+  
+                m = Base.classes.measurement
+                s = Base.classes.station
+                
     
 2. Precipitation Analysis  
         With datetime we can do calculations and analysis of the past twelve months. To do this take the last date in the dataset and subtract it from 366 days. This will limit the data to the past year.

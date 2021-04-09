@@ -44,17 +44,17 @@ Use Python and SQLAlchemy to do climate analysis and data exploration of the pro
      ```
      session.query(func.count(s.station)).first()[0]
      ```
-The chain of functions can get quite complex. For example, to get the station with the most observations the following query is used:
-```
-session.query(m.station).filter(s.station == m.station).group_by(m.station).order_by(func.count(m.tobs).desc()).first()
-```
-Here we are using the class variables set up earlier. They the same as tables in a SQL database. Metadata about the number of observations are in one class and the station name are in another. A join will link the two data points together. `order_by()` will arrange the results as needed by since we're interested in a numerical count the count function is applied to the class that has the temperature counts. Since it is joined to station name both pieces of metadata will move together. `first()` just shows the first result that is returned. To show all the stations and their corresponding observation count the query needs to be slightly altered. The most important part is to end the query with `all()` instead of `first()` so that all results will be returned.
-```
-session.query(s.station, s.name, func.count(s.name)).filter(s.station == m.station).group_by(s.name).order_by(func.count(s.name).desc()).all()
-```
+   The chain of functions can get quite complex. For example, to get the station with the most observations the following query is used:
+     ```
+     session.query(m.station).filter(s.station == m.station).group_by(m.station).order_by(func.count(m.tobs).desc()).first()
+     ```
+   Here we are using the class variables set up earlier. They the same as tables in a SQL database. Metadata about the number of observations are in one class and the station name are in another. A join will link the two data points together. `order_by()` will arrange the results as needed by since we're interested in a numerical count the count function is applied to the class that has the temperature counts. Since it is joined to station name both pieces of metadata will move together. `first()` just shows the first result that is returned. To show all the stations and their corresponding observation count the query needs to be slightly altered. The most important part is to end the query with `all()` instead of `first()` so that all results will be returned.
+     ```
+     session.query(s.station, s.name, func.count(s.name)).filter(s.station == m.station).group_by(s.name).order_by(func.count(s.name).desc()).all()
+     ```
 
-<img src="images/query.png" height="auto">
+   <img src="images/query.png" height="auto">
 
-Using a similar method as before we can convert the last 12 months of temperature data into a dataframe and graph it as a histogram
+   Using a similar method as before we can convert the last 12 months of temperature data into a dataframe and graph it as a histogram.
 
-<img src="images/histogram.png" height="auto">
+   <img src="images/histogram.png" height="auto">

@@ -10,32 +10,33 @@ Use Python and SQLAlchemy to do basic climate analysis and data exploration of t
 - Matplotlib
 - Flask
 
-1. Climate Analysis
-      - Database Connection  
+1. Database Connection  
         SQL ALchemy will be used to connect to the provided sqlite database. The `create_engine()` function will act as the bridge to the sqlite database. For the purposes of this project the database is stored locally. Once the location of the database is referenced it can be transformed into a model that python can work with using `automap_base()` and `prepare(engine, reflect=True)`. Automap reads the sqlite database and generates classes. To make future uses of these classes easier they are saved to variable as such:
         ```
         m = Base.classes.measurement
         s = Base.classes.station
         ```
+1. Climate Analysis
+
       - Precipitation Analysis  
         Using datetime we can do calculations and analysis of the past twelve months. To do this take the last date in the dataset and subtract it from 366 days. This will limit the data to the past year.
         ```
         last_date = session.query(m.date).order_by(m.date.desc()).first()[0]
         query_date = dt.datetime.strptime(last_date, '%Y-%m-%d') - dt.timedelta(days=366)
         ```
-Using a sqlalchemy orm query we can retrieve the data points for date and precipitation from that filtered dataset and then converting it to all dataframe will allow the data to be sorted by ascending value.
+        Using a sqlalchemy orm query we can retrieve the data points for date and precipitation from that filtered dataset and then converting it to all dataframe will allow the data to be sorted by ascending value.
 
         ```
         df = pd.DataFrame(data, columns=['date', 'precip'])
         climate_df = df.sort_values(by = 'date', ascending= True)
         ```
         
- With the sorted dataframe a graph of the rainfall data can be created.
+      With the sorted dataframe a graph of the rainfall data can be created.
 
-<img src="images/rain_chart.png" height="auto">
+      <img src="images/rain_chart.png" height="auto">
 
 3. Station Analysis  
-The following questions were asked about the stations in the dataset:
+The following are points of interest for the stations in the dataset:
   - Total number of stations
   - Stations and observation counts in descending order
   - Which station has the highest number of observations?

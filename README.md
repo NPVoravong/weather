@@ -17,15 +17,13 @@ Use Python and SQLAlchemy to do basic climate analysis and data exploration of t
         s = Base.classes.station
 ```
     
-2. Climate Analysis
-
-      - Precipitation Analysis  
-        Using datetime we can do calculations and analysis of the past twelve months. To do this take the last date in the dataset and subtract it from 366 days. This will limit the data to the past year.
-        ```
-        last_date = session.query(m.date).order_by(m.date.desc()).first()[0]
-        query_date = dt.datetime.strptime(last_date, '%Y-%m-%d') - dt.timedelta(days=366)
-        ```
-        Using a sqlalchemy orm query we can retrieve the data points for date and precipitation from that filtered dataset and then converting it to all dataframe will allow the data to be sorted by ascending value.
+2. Precipitation Analysis  
+        With datetime we can do calculations and analysis of the past twelve months. To do this take the last date in the dataset and subtract it from 366 days. This will limit the data to the past year.
+ ```
+ last_date = session.query(m.date).order_by(m.date.desc()).first()[0]
+ query_date = dt.datetime.strptime(last_date, '%Y-%m-%d') - dt.timedelta(days=366)
+ ```
+Using a sqlalchemy orm query we can retrieve the data points for date and precipitation from that filtered dataset and then converting it to all dataframe will allow the data to be sorted by ascending value.
 
         ```
         df = pd.DataFrame(data, columns=['date', 'precip'])

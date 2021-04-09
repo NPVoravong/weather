@@ -16,7 +16,7 @@ Use Python and SQLAlchemy to do climate analysis and data exploration of the pro
         m = Base.classes.measurement
         s = Base.classes.station
                 
-2. Precipitation Analysis
+2. Precipitation Analysis  
         With datetime we can do calculations and analysis of the past twelve months. To do this take the last date in the dataset and subtract it from 366 days. This will limit the data to the past year. 
         
         last_date = session.query(m.date).order_by(m.date.desc()).first()[0]

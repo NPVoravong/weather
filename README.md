@@ -10,28 +10,27 @@ Use Python and SQLAlchemy to do basic climate analysis and data exploration of t
 - Matplotlib
 - Flask
 
-### Climate Analysis
-1. Database Connection  
-SQL ALchemy will be used to connect to the provided sqlite database. The `create_engine()` function will act as the bridge to the sqlite database. For the purposes of this project the database is stored locally. Once the location of the database is referenced it can be transformed into a model that python can work with using `automap_base()` and `prepare(engine, reflect=True)`. Automap reads the sqlite database and generates classes. To make future uses of these classes easier they are saved to variable as such:
-```
-m = Base.classes.measurement
-s = Base.classes.station
-```
-2. Precipitation Analysis  
-Using datetime we can do calculations and analysis of the past twelve months. To do this take the last date in the dataset and subtract it from 366 days. This will limit the data to the past year.
-```
-last_date = session.query(m.date).order_by(m.date.desc()).first()[0]
-query_date = dt.datetime.strptime(last_date, '%Y-%m-%d') - dt.timedelta(days=366)
-```
+1. Climate Analysis
+      - Database Connection  
+        SQL ALchemy will be used to connect to the provided sqlite database. The `create_engine()` function will act as the bridge to the sqlite database. For the purposes of this project the database is stored locally. Once the location of the database is referenced it can be transformed into a model that python can work with using `automap_base()` and `prepare(engine, reflect=True)`. Automap reads the sqlite database and generates classes. To make future uses of these classes easier they are saved to variable as such:
+        ```
+        m = Base.classes.measurement
+        s = Base.classes.station
+        ```
+      - Precipitation Analysis  
+        Using datetime we can do calculations and analysis of the past twelve months. To do this take the last date in the dataset and subtract it from 366 days. This will limit the data to the past year.
+        ```
+        last_date = session.query(m.date).order_by(m.date.desc()).first()[0]
+        query_date = dt.datetime.strptime(last_date, '%Y-%m-%d') - dt.timedelta(days=366)
+        ```
 Using a sqlalchemy orm query we can retrieve the data points for date and precipitation from that filtered dataset and then converting it to all dataframe will allow the data to be sorted by ascending value.
-```
-# Save the query results as a Pandas DataFrame
-df = pd.DataFrame(data, columns=['date', 'precip'])
 
-# Sort the dataframe by date
-climate_df = df.sort_values(by = 'date', ascending= True)
-```
-With the sorted dataframe a graph of the rainfall data can be created.
+        ```
+        df = pd.DataFrame(data, columns=['date', 'precip'])
+        climate_df = df.sort_values(by = 'date', ascending= True)
+        ```
+        
+ With the sorted dataframe a graph of the rainfall data can be created.
 
 <img src="images/rain_chart.png" height="auto">
 
@@ -60,7 +59,7 @@ session.query(s.station, s.name, func.count(s.name)).filter(s.station == m.stati
 Using a similar method as before we can convert the last 12 months of temperature data into a dataframe and graph it as a histogram
 <img src="images/histogram.png" height="auto">
 
-### Flask App
+2. Flask App
 Using the same queries developed in the previous component we can display the data in a flask app. The important consideration is setting up the routes correctly. That will look as such
 ```
 @app.route("/api/v1.0/precipitation")
